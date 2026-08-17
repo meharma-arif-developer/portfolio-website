@@ -7,7 +7,6 @@ import {
   FaCheck 
 } from 'react-icons/fa';
 
-// HeroIcons ko react-icons/hi se import karein:
 import { 
   HiOutlineCalendar, 
   HiOutlineClock, 
@@ -20,6 +19,17 @@ import {
 const ContactPage = () => {
   const [copied, setCopied] = useState(false);
   const [timeString, setTimeString] = useState('');
+  
+  // Controlled Form State
+  const [formData, setFormData] = useState({
+    fullName: '',
+    email: '',
+    subject: '',
+    organization: '',
+    budget: '',
+    timeline: '',
+    message: ''
+  });
 
   // Live Pakistan Time Clock
   useEffect(() => {
@@ -44,6 +54,17 @@ const ContactPage = () => {
     navigator.clipboard.writeText('meharmaarif42@gmail.com');
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Handle form submission logic here (e.g., Web3Forms or EmailJS API integration)
+    console.log('Submitted Data:', formData);
   };
 
   return (
@@ -183,7 +204,7 @@ const ContactPage = () => {
                   </span>
                 </div>
 
-                <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
+                <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div>
                       <label className="text-[10px] font-extrabold tracking-widest uppercase text-slate-400 block mb-2">
@@ -191,7 +212,11 @@ const ContactPage = () => {
                       </label>
                       <input 
                         type="text" 
-                        placeholder="Meharma Arif"
+                        name="fullName"
+                        value={formData.fullName}
+                        onChange={handleChange}
+                        required
+                        placeholder="Your Name"
                         className="w-full bg-slate-50 border-b border-slate-200 py-2.5 px-3 text-xs font-semibold text-black placeholder-slate-300 focus:outline-none focus:border-black transition"
                       />
                     </div>
@@ -201,6 +226,10 @@ const ContactPage = () => {
                       </label>
                       <input 
                         type="email" 
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        required
                         placeholder="HELLO@EXAMPLE.COM"
                         className="w-full bg-slate-50 border-b border-slate-200 py-2.5 px-3 text-xs font-semibold text-black placeholder-slate-300 focus:outline-none focus:border-black transition"
                       />
@@ -214,6 +243,10 @@ const ContactPage = () => {
                       </label>
                       <input 
                         type="text" 
+                        name="subject"
+                        value={formData.subject}
+                        onChange={handleChange}
+                        required
                         placeholder="WEB DEVELOPMENT"
                         className="w-full bg-slate-50 border-b border-slate-200 py-2.5 px-3 text-xs font-semibold text-black placeholder-slate-300 focus:outline-none focus:border-black transition"
                       />
@@ -224,6 +257,9 @@ const ContactPage = () => {
                       </label>
                       <input 
                         type="text" 
+                        name="organization"
+                        value={formData.organization}
+                        onChange={handleChange}
                         placeholder="IF ANY"
                         className="w-full bg-slate-50 border-b border-slate-200 py-2.5 px-3 text-xs font-semibold text-black placeholder-slate-300 focus:outline-none focus:border-black transition"
                       />
@@ -237,7 +273,10 @@ const ContactPage = () => {
                       </label>
                       <input 
                         type="text" 
-                        placeholder="E.G. $5K - $10K"
+                        name="budget"
+                        value={formData.budget}
+                        onChange={handleChange}
+                        placeholder="E.G. $500 - $1,000"
                         className="w-full bg-slate-50 border-b border-slate-200 py-2.5 px-3 text-xs font-semibold text-black placeholder-slate-300 focus:outline-none focus:border-black transition"
                       />
                     </div>
@@ -247,6 +286,9 @@ const ContactPage = () => {
                       </label>
                       <input 
                         type="text" 
+                        name="timeline"
+                        value={formData.timeline}
+                        onChange={handleChange}
                         placeholder="TIME DURATION"
                         className="w-full bg-slate-50 border-b border-slate-200 py-2.5 px-3 text-xs font-semibold text-black placeholder-slate-300 focus:outline-none focus:border-black transition"
                       />
@@ -259,6 +301,10 @@ const ContactPage = () => {
                     </label>
                     <textarea 
                       rows={3} 
+                      name="message"
+                      value={formData.message}
+                      onChange={handleChange}
+                      required
                       placeholder="HOW CAN I HELP YOU?"
                       className="w-full bg-slate-50 border-b border-slate-200 py-2.5 px-3 text-xs font-semibold text-black placeholder-slate-300 focus:outline-none focus:border-black transition resize-none"
                     />

@@ -17,22 +17,24 @@ const Contact = () => {
     message: ''
   });
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
   const handleSubmit = (e) => {
-  e.preventDefault();
-  const formData = new FormData(e.target);
-  const name = formData.get("name");
-  const email = formData.get("email");
-  const subject = formData.get("subject") || "Portfolio Inquiry";
-  const message = formData.get("message");
+    e.preventDefault();
+    const subjectText = formData.subject.trim() || "Portfolio Inquiry";
+    
+    const mailtoUrl = `mailto:${personalInfo.email}?subject=${encodeURIComponent(
+      subjectText
+    )}&body=${encodeURIComponent(
+      `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
+    )}`;
 
-  const mailtoUrl = `mailto:meharmaarif42@gmail.com?subject=${encodeURIComponent(
-    subject
-  )}&body=${encodeURIComponent(
-    `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
-  )}`;
+    window.location.href = mailtoUrl;
+  };
 
-  window.location.href = mailtoUrl;
-};
   return (
     <section id="contact" className="w-full bg-[#050505] text-white py-20 px-4 sm:px-6 lg:px-8 font-sans">
       <div className="max-w-6xl mx-auto">
@@ -132,10 +134,11 @@ const Contact = () => {
                   </label>
                   <input
                     type="text"
+                    name="name"
                     required
-                    placeholder="your name"
+                    placeholder="Your Name"
                     value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    onChange={handleChange}
                     className="w-full bg-[#141417] border border-slate-800/90 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-slate-600 transition"
                   />
                 </div>
@@ -146,16 +149,17 @@ const Contact = () => {
                   </label>
                   <input
                     type="email"
+                    name="email"
                     required
-                    placeholder="meharma@gmail.com"
+                    placeholder="your.email@example.com"
                     value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    onChange={handleChange}
                     className="w-full bg-[#141417] border border-slate-800/90 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-slate-600 transition"
                   />
                 </div>
               </div>
 
-              {/* Subject Dropdown / Input */}
+              {/* Subject Input */}
               <div>
                 <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-2">
                   SUBJECT
@@ -163,9 +167,10 @@ const Contact = () => {
                 <div className="relative flex items-center">
                   <input
                     type="text"
-                    placeholder="Select a Topic"
+                    name="subject"
+                    placeholder="Project Inquiry"
                     value={formData.subject}
-                    onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                    onChange={handleChange}
                     className="w-full bg-[#141417] border border-slate-800/90 rounded-xl pl-4 pr-10 py-3 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-slate-600 transition"
                   />
                   <FaPaperPlane className="absolute right-3.5 text-slate-600 text-xs pointer-events-none" />
@@ -179,10 +184,11 @@ const Contact = () => {
                 </label>
                 <textarea
                   rows="4"
+                  name="message"
                   required
                   placeholder="How can I help you?"
                   value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  onChange={handleChange}
                   className="w-full bg-[#141417] border border-slate-800/90 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-slate-600 transition resize-none"
                 ></textarea>
               </div>
