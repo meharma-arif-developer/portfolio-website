@@ -1,0 +1,39 @@
+@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background-color: #000000;
+  overflow-x: hidden;
+}
+@layer base {
+  body {
+    background-color: #0b0f17;
+    color: #e2e8f0;
+    font-family: 'Inter', sans-serif;
+  }
+}
+/* Cards ka base background aur border change karne ke liye */
+div[class*="rounded-2xl"], 
+div[class*="rounded-3xl"] {
+  background-color: rgba(5, 16, 39, 0.75) !important; /* Rich Dark Slate Blue Card Color */
+  border-color: rgba(99, 102, 241, 0.25) !important;  /* Soft Purple/Indigo Border */
+  backdrop-filter: blur(12px);
+}
+
+/* Jab card par mouse (hover) layein tab ka color aur glow */
+div[class*="rounded-2xl"]:hover, 
+div[class*="rounded-3xl"]:hover {
+  background-color: rgba(8, 26, 54, 0.85) !important;
+  border-color: rgba(217, 212, 223, 0.6) !important;  /* Bright Neon Purple Glow Border */
+  box-shadow: 0 10px 30px -10px rgba(237, 235, 240, 0.3) !important;
+}
