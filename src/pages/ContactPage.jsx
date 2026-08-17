@@ -62,10 +62,14 @@ const ContactPage = () => {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    // Handle form submission logic here (e.g., Web3Forms or EmailJS API integration)
-    console.log('Submitted Data:', formData);
-  };
+  e.preventDefault();
+  const subjectText = encodeURIComponent(formData.subject.trim() || "Portfolio Inquiry");
+  const bodyText = encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`);
+
+  // Directly open Gmail web client in new tab
+  const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${personalInfo.email}&su=${subjectText}&body=${bodyText}`;
+  window.open(gmailUrl, '_blank');
+};
 
   return (
     <div className="min-h-screen bg-[#050505] text-white pt-24 pb-20 px-4 sm:px-6 lg:px-8 font-sans">

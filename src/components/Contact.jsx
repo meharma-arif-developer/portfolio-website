@@ -23,17 +23,14 @@ const Contact = () => {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    const subjectText = formData.subject.trim() || "Portfolio Inquiry";
-    
-    const mailtoUrl = `mailto:${personalInfo.email}?subject=${encodeURIComponent(
-      subjectText
-    )}&body=${encodeURIComponent(
-      `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
-    )}`;
+  e.preventDefault();
+  const subjectText = encodeURIComponent(formData.subject.trim() || "Portfolio Inquiry");
+  const bodyText = encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`);
 
-    window.location.href = mailtoUrl;
-  };
+  // Directly open Gmail web client in new tab
+  const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${personalInfo.email}&su=${subjectText}&body=${bodyText}`;
+  window.open(gmailUrl, '_blank');
+};
 
   return (
     <section id="contact" className="w-full bg-[#050505] text-white py-20 px-4 sm:px-6 lg:px-8 font-sans">

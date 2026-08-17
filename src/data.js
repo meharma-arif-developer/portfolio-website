@@ -44,6 +44,7 @@ export const projects = [
     id: 1,
     title: "Shop AI",
     category: "Entrepreneurship & AI",
+    image: "/public/images/SHOPAI1122.png",
     description:
       "An AI-driven security application designed to detect fraudulent e-commerce stores, verify digital trust signals, and compute safety scores for online shoppers.",
     tech: ["React", "AI Integration", "Tailwind CSS"],
@@ -54,6 +55,7 @@ export const projects = [
     id: 2,
     title: "Cooking App",
     category: "Mobile UI / App",
+    image: "/public/images/CookingApp.png",
     description:
       "Engineered a user-friendly mobile application featuring intuitive recipe navigation, itemized ingredient checklists, and step-by-step cooking guides.",
     tech: ["Mobile UI", "JavaScript", "React Native"],
@@ -64,6 +66,7 @@ export const projects = [
     id: 3,
     title: "Flight Management System",
     category: "Software Engineering",
+    image: "/public/images/FlightSystem.png",
     description:
       "A comprehensive management platform utilizing OOP principles to handle passenger records, flight schedules, and logistical system workflows.",
     tech: ["C++", "OOP", "Data Structures"],
@@ -72,12 +75,29 @@ export const projects = [
   },
   {
     id: 4,
-    title: "ATM Management Simulation",
-    category: "Full System Scripting",
-    description:
-      "Multi-featured banking console providing secure PIN configuration, transaction logging, and Python integration for cash flow trend graphs.",
-    tech: ["C++", "Python", "Data Visualization"],
-    github: "#",
-    demo: "#",
-  },
+    title: "Rock Paper Scissors game",
+    category: "WEB DEV",
+    description: "I have successfully developed a fully functional Rock Paper Scissors game using pure HTML, CSS, and JavaScript.This project helped me strengthen my understanding of DOM manipulation, event handling, conditional logic, and score tracking.",
+    image: "/public/images/GAME.png",
+    tech: ["Javascript", "HTML & CSS"],
+    demoUrl: " https://meharma-arif-developer.github.io/Game-Stone-paper-/",
+    githubUrl: "https://github.com/meharma-arif-developer/Game-Stone-paper-",
+  },{
+    id: 5,
+    title: "Cooking website",
+    category: "OPEN SOURCE",
+    description: "Currently cooking, Stay tuned...",
+    tags: ["HTML", "CSS" , "Javascript"],
+    demoUrl: "#",
+    githubUrl: "#",
+  },{
+    id: 6,
+    title: "Project [Classified]",
+    category: "OPEN SOURCE",
+    description: "Currently cooking, Stay tuned...",
+    image: "",
+    tags: [],
+    demoUrl: "#",
+    githubUrl: "#",
+  }
 ];
