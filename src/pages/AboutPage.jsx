@@ -66,7 +66,7 @@ const AboutPage = () => {
               <div className="relative rounded-2xl overflow-hidden border border-slate-800/80 bg-[#121216] aspect-[4/5] sm:aspect-[4/3] lg:aspect-[4/5] flex items-end">
                 {/* Replace src with your image path */}
                 <img 
-                  src="/public/images/IMG-20251022-WA0045.jpg" 
+                  src="/images/IMG-20251022-WA0045.jpg" 
                   alt="Profile" 
                   className="absolute inset-0 w-full h-full object-cover filter grayscale contrast-125"
                 />
