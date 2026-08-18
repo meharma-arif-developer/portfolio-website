@@ -16,21 +16,53 @@ const Contact = () => {
     subject: '',
     message: ''
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [statusMessage, setStatusMessage] = useState({ text: '', isError: false });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
-  e.preventDefault();
-  const subjectText = encodeURIComponent(formData.subject.trim() || "Portfolio Inquiry");
-  const bodyText = encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setStatusMessage({ text: '', isError: false });
 
-  // Directly open Gmail web client in new tab
-  const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${personalInfo.email}&su=${subjectText}&body=${bodyText}`;
-  window.open(gmailUrl, '_blank');
-};
+    // Web3Forms payload definition
+    const formPayload = {
+      access_key: "ce3f687f-3658-4e53-a0ac-099423769ea7", // <-- Yahan apni Web3Forms Access Key paste karein
+      name: formData.name,
+      email: formData.email,
+      subject: formData.subject.trim() || "Portfolio Inquiry",
+      message: formData.message,
+    };
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(formPayload),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setStatusMessage({ text: "Message sent successfully!", isError: false });
+        // Form clear / reset
+        setFormData({ name: '', email: '', subject: '', message: '' });
+      } else {
+        setStatusMessage({ text: "Something went wrong. Please try again.", isError: true });
+      }
+    } catch (error) {
+      setStatusMessage({ text: "Failed to send message. Please check connection.", isError: true });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <section id="contact" className="w-full bg-[#050505] text-white py-20 px-4 sm:px-6 lg:px-8 font-sans">
@@ -49,10 +81,10 @@ const Contact = () => {
         {/* Grid Container */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           
-          {/* Left Side: Bento Info Cards (5 Cols) */}
+          {/* Left Side: Bento Info Cards */}
           <div className="lg:col-span-5 space-y-4">
             
-            {/* Card 1: Current Status */}
+            {/* Current Status */}
             <div className="bg-[#0e0e11] border border-slate-800/80 rounded-2xl p-5 shadow-sm">
               <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-3">
                 CURRENT STATUS
@@ -68,7 +100,7 @@ const Contact = () => {
               </div>
             </div>
 
-            {/* Card 2: Drop A Line */}
+            {/* Drop A Line */}
             <div className="bg-[#0e0e11] border border-slate-800/80 rounded-2xl p-5 shadow-sm space-y-6">
               <div>
                 <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-2">
@@ -101,7 +133,7 @@ const Contact = () => {
               </div>
             </div>
 
-            {/* Card 3: Location */}
+            {/* Location */}
             <div className="bg-[#0e0e11] border border-slate-800/80 rounded-2xl p-5 shadow-sm">
               <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-2">
                 LOCATION
@@ -119,11 +151,10 @@ const Contact = () => {
 
           </div>
 
-          {/* Right Side: Form (7 Cols) */}
+          {/* Right Side: Direct API Submission Form */}
           <div className="lg:col-span-7 bg-[#0e0e11] border border-slate-800/80 rounded-2xl p-6 sm:p-8 shadow-sm">
             <form onSubmit={handleSubmit} className="space-y-5">
               
-              {/* Name & Email Inputs */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-2">
@@ -156,7 +187,6 @@ const Contact = () => {
                 </div>
               </div>
 
-              {/* Subject Input */}
               <div>
                 <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-2">
                   SUBJECT
@@ -174,7 +204,6 @@ const Contact = () => {
                 </div>
               </div>
 
-              {/* Message Input */}
               <div>
                 <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-2">
                   MESSAGE <span className="text-red-500">*</span>
@@ -190,13 +219,19 @@ const Contact = () => {
                 ></textarea>
               </div>
 
-              {/* Submit Button */}
               <button
                 type="submit"
-                className="w-full py-3.5 bg-white text-black font-semibold text-sm rounded-xl hover:bg-slate-200 transition shadow-sm mt-2"
+                disabled={isSubmitting}
+                className="w-full py-3.5 bg-white text-black font-semibold text-sm rounded-xl hover:bg-slate-200 transition shadow-sm mt-2 disabled:opacity-50 flex items-center justify-center gap-2"
               >
-                Send Message
+                {isSubmitting ? "Sending..." : "Send Message"}
               </button>
+
+              {statusMessage.text && (
+                <p className={`text-xs text-center font-semibold mt-3 ${statusMessage.isError ? 'text-red-400' : 'text-emerald-400'}`}>
+                  {statusMessage.text}
+                </p>
+              )}
 
             </form>
           </div>

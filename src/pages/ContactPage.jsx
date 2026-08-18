@@ -31,6 +31,9 @@ const ContactPage = () => {
     message: ''
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [statusMessage, setStatusMessage] = useState({ text: '', isError: false });
+
   // Live Pakistan Time Clock
   useEffect(() => {
     const updateClock = () => {
@@ -61,15 +64,55 @@ const ContactPage = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
-  e.preventDefault();
-  const subjectText = encodeURIComponent(formData.subject.trim() || "Portfolio Inquiry");
-  const bodyText = encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`);
+  // Direct Web3Forms API Submission (No Email Client App Popup)
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setStatusMessage({ text: '', isError: false });
 
-  // Directly open Gmail web client in new tab
-  const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${personalInfo.email}&su=${subjectText}&body=${bodyText}`;
-  window.open(gmailUrl, '_blank');
-};
+    const formPayload = {
+      access_key: "ce3f687f-3658-4e53-a0ac-099423769ea7",
+      name: formData.fullName,
+      email: formData.email,
+      subject: formData.subject.trim() || "Portfolio Inquiry",
+      organization: formData.organization || "N/A",
+      budget: formData.budget || "N/A",
+      timeline: formData.timeline || "N/A",
+      message: formData.message,
+    };
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(formPayload),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setStatusMessage({ text: "Message sent successfully!", isError: false });
+        setFormData({
+          fullName: '',
+          email: '',
+          subject: '',
+          organization: '',
+          budget: '',
+          timeline: '',
+          message: ''
+        });
+      } else {
+        setStatusMessage({ text: "Something went wrong. Please try again.", isError: true });
+      }
+    } catch (error) {
+      setStatusMessage({ text: "Failed to send message. Please check connection.", isError: true });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#050505] text-white pt-24 pb-20 px-4 sm:px-6 lg:px-8 font-sans">
@@ -316,10 +359,17 @@ const ContactPage = () => {
 
                   <button 
                     type="submit" 
-                    className="w-full bg-black text-white font-extrabold text-xs tracking-widest uppercase py-4 rounded-xl hover:bg-slate-800 transition shadow-lg mt-4"
+                    disabled={isSubmitting}
+                    className="w-full bg-black text-white font-extrabold text-xs tracking-widest uppercase py-4 rounded-xl hover:bg-slate-800 transition shadow-lg mt-4 disabled:opacity-50"
                   >
-                    SEND MESSAGE
+                    {isSubmitting ? "SENDING..." : "SEND MESSAGE"}
                   </button>
+
+                  {statusMessage.text && (
+                    <p className={`text-xs text-center font-bold mt-3 ${statusMessage.isError ? 'text-red-500' : 'text-emerald-600'}`}>
+                      {statusMessage.text}
+                    </p>
+                  )}
                 </form>
               </div>
             </div>
