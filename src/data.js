@@ -3,6 +3,7 @@ export const personalInfo = {
   title: "Frontend Developer & Software Engineer",
   email: "meharmaarif42@gmail.com",
   phone: "+92 325 8713722",
+  image: "/public/images/IMG-20251022-WA0045.jpg",
   location: "Lahore, Pakistan",
   github: "https://github.com/meharma-arif-developer/", // Aap apna Github link add kar sakti hain
   linkedin: "https://www.linkedin.com/in/meharma-arif-developer/",
